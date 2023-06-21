@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Survey of Available Corpora for Building Data-Driven Dialogue Systems</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+        body {
+        background-color: #ffffff;
+    }
+
+    #main {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .article {
+        background-color: white;
+        /* border-radius: 5px; */
+        padding: 30px;
+    }
+
+    .title {
+        font-size: 2rem;
+        font-weight: 500;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .authors {
+        font-size: 1.1rem;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .alert {
+        background-color: #dff0d8;
+        border: 1px solid #d6e9c6;
+        color: #3c763d;
+        border-radius: 4px;
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+
+    .alert a {
+        color: #2b542c;
+    }
+
+    .figure {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .figure img {
+        max-width: 80%;
+        height: auto;
+    }
+
+    .caption {
+        font-size: 0.9rem;
+        color: #777;
+        margin-top: 10px;
+    }
+
+    .abstract {
+        margin-bottom: 30px;
+    }
+
+    .heading {
+        font-size: 1.5rem;
+        font-weight: 500;
+        margin-bottom: 10px;
+    }
+
+    .abstract .text {
+        font-size: 1.1rem;
+        margin-bottom: 15px;
+        line-height: 1.6;
+    }
+
+    .abstract a {
+        color: #337ab7;
+    }
+
+    .tables {
+        margin-bottom: 30px;
+    }
+
+    .header {
+        font-size: 1.3rem;
+        font-weight: 500;
+        margin-bottom: 10px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 15px;
+    }
+
+    table td {
+        padding: 10px;
+        border: 1px solid #ccc;
+    }
+
+    table tr:first-child td {
+        background-color: #f2f2f2;
+        font-weight: 500;
+    }
+
+    table td a.dllink {
+        color: #337ab7;
+    }
+
+    @media (max-width: 768px) {
+        .title {
+            font-size: 1.5rem;
+        }
+
+        .heading {
+            font-size:
+            1.2rem;
+}
+.authors {
+            font-size: 1rem;
+        }
+
+        .abstract .text {
+            font-size: 1rem;
+        }
+
+        .header {
+            font-size: 1.1rem;
+        }
+
+        table {
+            font-size: 0.9rem;
+        }
+
+        .figure img {
+            max-width: 100%;
+        }
+    }
+</style>
+</head>
+<body>
+    <div id="main">
+        <div id="content">
+            <div class="article">
+                <div class="pub">
+                    <div class="title">
+                        Data-Driven Dialogue System Datasets in the 2020s
+                    </div>
+                    <div class="authors">
+                        <span class="author"><a href="http://peterhenderson.co">Peter Henderson</a></span>
+                    </div>
+                    <div class="alert alert-success fade in">
+                        <strong>Call for contributions!</strong> We're always looking for more datasets. Feel free to <a href="https://github.com/Breakend/DialogueDatasets2">send us a pull request!</a>
+                    </div>
+                    <!-- <div class="figure">
+                        <img src="./tfthing_files/splash_image.png" alt="A basic outline of a dialog system.">
+                        <br>
+                        <div class="caption">A basic outline of a dialog system.</div>
+                    </div> -->
+                    <div class="abstract">
+                        <!-- <div class="heading">Abstract</div> -->
+                        <div class="text">
+                            This is to keep track of the swarm of new datasets for building data-driven dialogue systems. Based on our previous survey  <a href="https://arxiv.org/abs/1512.05742" class="link at">[ here ]</a>.
+                        </div>
+                    </div>
+                    <div class="tables">
+                        <div class="heading">Search Datasets</div>
+                        <input type="text" id="search" placeholder="Type to search">
+
+                        <div class="paper">
+                            <div style="text-align:left; font-size: 14px;">
+                                <div class="footnotesize">
+                                  
+                                    <table border="1" id="table"> 
+                                        <tr>
+                                            <td align="left">Name</td>
+                                            <td align="left">Type</td>
+                                            <td align="left">Topics</td>
+                                            <td align="center">Avg. # of turns</td>
+                                            <td align="center">Total # of dialogues</td>
+                                            <td align="center" style="width: 5%;">Total # of words</td>
+                                            <td align="left">Description</td>
+                                            <td align="left">Language(s)</td>
+                                            <td align="left">License</td>
+                                            <td align="left">Links</td>
+                                        </tr>
+                                        <!-- https://declare-lab.net/CICERO/ -->
+                                        <!-- CICERO contains 53,000 inferences for five commonsense dimensions -- cause, subsequent event, prerequisite, motivation, and emotional reaction -- collected from 5600 dialogues. We design two challenging generative and multi-choice alternative selection tasks for the state-of-the-art NLP models to solve. -->
+                                        <tr>
+                                          <!-- https://huggingface.co/datasets/allenai/prosocial-dialog -->
+                                          <!-- ProsocialDialog is the first large-scale multi-turn English dialogue dataset to teach conversational agents to respond to problematic content following social norms. Covering diverse unethical, problematic, biased, and toxic situations, ProsocialDialog contains responses that encourage prosocial behavior, grounded in commonsense social rules (i.e., rules-of-thumb, RoTs). Created via a human-AI collaborative framework, ProsocialDialog consists of 58K dialogues, with 331K utterances, 160K unique RoTs, and 497K dialogue safety labels accompanied by free-form rationales. -->
+                                            <td align="left">
+                                                ProsocialDialog
+                                            </td>
+                                            <td align="left">Dialogue</td>
+                                            <td align="left">Social norms</td>
+                                            <td align="center">5.7</td>
+                                            <td align="center">58K</td>
+                                            <td align="center">--</td>
+                                            <td align="left">ProsocialDialog is the first large-scale multi-turn English dialogue dataset to teach conversational agents to respond to problematic content following social norms. Covering diverse unethical, problematic, biased, and toxic situations, ProsocialDialog contains responses that encourage prosocial behavior, grounded in commonsense social rules (i.e., rules-of-thumb, RoTs). Created via a human-AI collaborative framework, ProsocialDialog consists of 58K dialogues, with 331K utterances, 160K unique RoTs, and 497K dialogue safety labels accompanied by free-form rationales.</td>
+                                            <td align="center">English</td>
+                                            <td align="center">CC-BY-4.0</td>
+                                            <td align="left"><a class="dllink" href="https://huggingface.co/datasets/allenai/prosocial-dialog">Info and download</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="left">
+                                                CICERO
+                                            </td>
+                                            <td align="left">Dialogue</td>
+                                            <td align="left">Commonsense</td>
+                                            <td align="center">--</td>
+                                            <td align="center">5.6K</td>
+                                            <td align="center">--</td>
+                                            <td align="left">CICERO contains 53,000 inferences for five commonsense dimensions -- cause, subsequent event, prerequisite, motivation, and emotional reaction -- collected from 5600 dialogues. We design two challenging generative and multi-choice alternative selection tasks for the state-of-the-art NLP models to solve.</td>
+                                            <td align="center">--</td>
+                                            <td align="center">--</td>
+                                            <td align="left"><a class="dllink" href="https://declare-lab.net/CICERO/">Info and download</a></td>
+                                        </tr>
+                                        <tr>
+                                        <td align="left">
+                                          Interscript
+                                        </td>
+                                        <td align="left">Instruction/Editing</td>
+                                        <td align="left">Plans/Lists</td>
+                                        <td align="center">--</td>
+                                        <td align="center">8.5K</td>
+                                        <td align="center">--</td>
+                                        <td align="left">The Interscript dataset contains interactive user feedback on a T5-11B model generated scripts.</td>
+                                        <td align="center">English</td>
+                                        <td align="center">Apache-2.0</td>
+                                        <td align="left"><a class="dllink" href="https://github.com/allenai/interscript">Info and download</a></td>
+                                        </tr>
+                                         <tr>
+                                            <td align="left">
+                                                CRD3
+                                            </td>
+                                            <td align="left">Dialogue</td>
+                                            <td align="left">Storytelling</td>
+                                            <td align="center">--</td>
+                                            <td align="center">52k</td>
+                                            <td align="center">--</td>
+                                            <td align="left">Storytelling with Dialogue: A Critical Role Dungeons and Dragons Dataset. Critical Role is an unscripted, live-streamed show where a fixed group of people play Dungeons and Dragons, an open-ended role-playing game. The dataset is collected from 159 Critical Role episodes transcribed to text dialogues, consisting of 398,682 turns. It also includes corresponding abstractive summaries collected from the Fandom wiki. The dataset is linguistically unique in that the narratives are generated entirely through player collaboration and spoken interaction. For each dialogue, there are a large number of turns, multiple abstractive summaries with varying levels of detail, and semantic ties to the previous dialogues.</td>
+
+                                            <td align="center">--</td>
+                                            <td align="center">CC-BY-SA-4.0</td>
+                                            <td align="left"><a class="dllink" href="https://huggingface.co/datasets/crd3">Info and download</a></td>
+                                        </tr>
+                                        <tr>
+                                          <!-- https://mcgill-nlp.github.io/statcan-dialogue-dataset/ -->
+                                          <td align="left">
+                                            StatCAN
+                                          </td>
+                                          <td align="left">Dialogue</td>
+                                          <td align="left">Informational</td>
+                                          <td align="center">--</td>
+                                          <td align="center">--</td>
+                                          <td align="center">--</td>
+                                          <td align="left">We introduce the StatCan Dialogue Dataset consisting of 19,379 conversation turns between agents working at Statistics Canada and online users looking for published data tables. The conversations stem from genuine intents, are held in English or French, and lead to agents retrieving one of over 5000 complex data tables. Based on this dataset, we propose two tasks: (1) automatic retrieval of relevant tables based on a on-going conversation, and (2) automatic generation of appropriate agent responses at each turn. We investigate the difficulty of each task by establishing strong baselines. Our experiments on a temporal data split reveal that all models struggle to generalize to future conversations, as we observe a significant drop in performance across both tasks when we move from the validation to the test set. In addition, we find that response generation models struggle to decide when to return a table. Considering that the tasks pose significant challenges to existing models, we encourage the community to develop models for our task, which can be directly used to help knowledge workers find relevant tables for live chat users. </td>
+                                          <td align="center">--</td>
+                                          <td align="center">--</td>
+                                          <td align="left"><a class="dllink" href="https://mcgill-nlp.github.io/statcan-dialogue-dataset/">Info and download</a></td> 
+                                        </tr>
+                                        <tr>
+                                          <td align="left">
+                                            SODA
+                                          </td>
+                                          <td align="left">Dialogue</td>
+                                          <td align="left">Commonsense</td>
+                                          <td align="center">--</td>
+                                          <td align="center">385k</td>
+                                          <td align="center">--</td>
+                                          <td align="left">SODA is the first publicly available, million-scale, high-quality dialogue dataset covering a wide range of social interactions. Dialogues are distilled from a PLM (InstructGPT; Ouyang et al., 2022) by contextualizing social commonsense knowledge from a knowledge graph (Atomic10x; West et al., 2022). Human evaluation shows that dialogues in SODA are more consistent, specific, and (surprisingly) natural than prior human-authored datasets – e.g., DailyDialog (Li et al., 2017), BlendedSkillTalk (Smith et al., 2020). Also, since social commonsense knowledge encompasses emotional reactions (i.e., the xReact relation), SODA includes 385K conversations labeled with 1.7K unique emotions along with information about the experiencer and the cause – i.e., PersonX and the head event in the symbolic commonsense knowledge triple.</td>
+                                          <td align="center">--</td>
+                                          <td align="center">--</td>
+                                          <td align="left"><a class="dllink" href="https://huggingface.co/datasets/allenai/soda">Info and download</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="left">
+                                                CICERO-v2
+                                            </td>
+                                            <td align="left">Dialogue</td>
+                                            <td align="left">Commonsense</td>
+                                            <td align="center">--</td>
+                                            <td align="center">8K</td>
+                                            <td align="center">--</td>
+                                            <td align="left">Depending on a situation, multiple different reasonings are possible each leading to various unique inferences. In constructing CICERO-v2, we asked annotators to write more than one plausible inference for each dialogue context. We call this task — Multiview Contextual Commonsense Inference, a highly challenging task for large language models. CICERO-v2 contains more than 8000 dialogue contexts each manually annotated with more than one plausible inferences for the following relation types: cause, subsequent event, emotional reaction, motivation.</td>
+                                            <td align="center">--</td>
+                                            <td align="center">--</td>
+                                            <td align="left"><a class="dllink" href="https://declare-lab.net/CICERO/">Info and download</a></td>
+                                        </tr>
+                                         <tr>
+                                            <td align="left">
+                                                Commonsense-Dialogues
+                                            </td>
+                                            <td align="left">Dialogue</td>
+                                            <td align="left">Commonsense</td>
+                                            <td align="center">~5</td>
+                                            <td align="center">11K</td>
+                                            <td align="center">--</td>
+                                            <td align="left">We present Commonsense-Dialogues, a crowdsourced dataset of ~11K dialogues grounded in social contexts involving utilization of commonsense.  The social contexts used were sourced from the train split of the SocialIQA dataset, a multiple-choice question-answering based social commonsense reasoning benchmark.
+
+                                                For the collection of the Commonsense-Dialogues dataset, each Turker was presented a social context and asked to write a dialogue of 4-6 turns between two people based on the event(s) described in the context. The Turker was asked to alternate between the roles of an individual referenced in the context and a 3rd party friend.
+                                            </td>
+                                            <td align="center">--</td>
+                                            <td align="center">--</td>
+                                            <td align="left"><a class="dllink" href="https://github.com/alexa/commonsense-dialogues">Info and download</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="left">
+                                                Taskmaster-1
+                                            </td>
+                                            <td align="left">Dialogue</td>
+                                            <td align="left">Task-oriented</td>
+                                            <td align="center">--</td>
+                                            <td align="center">13K</td>
+                                            <td align="center">--</td>
+                                            <td align="left">The dataset consists of 13,215 task-based dialogs in English, including 5,507 spoken and 7,708 written dialogs created with two distinct procedures. Each conversation falls into one of six domains: ordering pizza, creating auto repair appointments, setting up ride service, ordering movie tickets, ordering coffee drinks and making restaurant reservations. Two-person, spoken dialogs were created using a Wizard of Oz methodology in which crowdsourced workers played the role of a 'user' and trained call center operators played the role of the 'assistant'. In this way, users were led to believe they were interacting with an automated system while it was in fact a human, allowing them to express their turns in natural ways but in the context of an automated interface.
+
+                                                For the written dialogs, we engaged crowdsourced workers to write the full conversation themselves based on scenarios outlined for each task, thereby playing roles of both the user and assistant. In a departure from traditional annotation techniques dialogs are labeled with simple API arguments.
+                                            </td>
+                                            <td align="center">--</td>
+                                            <td align="center">--</td>
+                                            <td align="left"><a class="dllink" href="https://research.google/resources/datasets/taskmaster-1/">Info and download</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="left">
+                                                WikiDialog-OQ
+                                            </td>
+                                            <td align="left">Dialogue</td>
+                                            <td align="left">Information-seeking</td>
+                                            <td align="center">--</td>
+                                            <td align="center">11M</td>
+                                            <td align="center">--</td>
+                                            <td align="left">We are making WikiDialog-OQ, a dataset containing 11M information-seeking conversations from passages in English Wikipedia, publicly available. Each conversation was generated using the dialog inpainting method detailed in the paper using the Inpaint-OQ inpainter model, a T5-XXL model that was fine-tuned on OR-QuAC and QReCC using a dialog reconstruction loss. For a detailed summary of the dataset, please refer to the data card. 
+                                            </td>
+                                            <td align="center">--</td>
+                                            <td align="center">--</td>
+                                            <td align="left"><a class="dllink" href="https://github.com/google-research/dialog-inpainting#wikidialog-oq">Info and download</a></td>
+                                        </tr>
+                                        <tr>
+                                          <td align="left">
+                                            WikiTalkEdit
+                                            </td>
+                                          <td align="left">Dialogue</td>
+                                          <td align="left">Editing</td>
+                                          <td align="center">--</td>
+                                          <td align="center">32K</td>
+                                          <td align="center">--</td>
+                                          <td align="left">We introduce the WikiTalkEdit dataset, a novel dataset for research in online collaboration. The dataset is a subset of the Wikipedia Talk Corpus available as of May 2018. It contains 12,882 dialogue triples with labels about editors’ subsequent editorial (editing) behavior, and 19,632 triplets with labels corresponding to editors’ emotion as manifested in their replies. Table 1 has examples from the dataset.
+                                          </td>
+                                          <td align="center">--</td>
+                                          <td align="center">--</td>
+                                          <td align="left"><a class="dllink" href="https://github.com/kj2013/WikiTalkEdit/">Info and download</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="left">
+                                                FaithDial
+                                            </td>
+                                            <td align="left">Dialogue</td>
+                                            <td align="left">Information-seeking</td>
+                                            <td align="center">--</td>
+                                            <td align="center">50K</td>
+                                            <td align="center">--</td>
+                                            <td align="left">The goal of information-seeking dialogue is to respond to user queries with natural language utterances that are grounded on knowledge sources. In our recent investigation, we show that existing knowledge-grounded benchmarks are fraught with hallucinations (>60% of the responses). To mitigate this behavior, we adopt a data-centric solution and create FaithDial, a new benchmark for hallucination-free dialogues by editing hallucinated responses in the Wizard of Wikipedia benchmark. FaithDial contains around 50K turns across 5.5K conversations. If trained on FaithDial, state-of-the-art dialogue models are significantly more faithful while also enhancing other dialogue aspects like cooperativeness, creativity and engagement.</td>
+                                            <td align="center">--</td>
+                                            <td align="center">--</td>
+                                            <td align="left"><a class="dllink" href="https://mcgill-nlp.github.io/FaithDial/">Info and download</a></td>
+                                        </tr>
+                                        <tr>
+                                           
+                                            <td align="left">
+                                                CookDial
+                                            </td>
+                                            <td align="left">Dialogue</td>
+                                            <td align="left">Task-oriented</td>
+                                            <td align="center">--</td>
+                                            <td align="center">260</td>
+                                            <td align="center">--</td>
+                                            <td align="left">This work presents a new dialog dataset, CookDial, that facilitates research on task-oriented dialog systems with procedural knowledge understanding. The corpus contains 260 human-to-human task-oriented dialogs in which an agent, given a recipe document, guides the user to cook a dish. Dialogs in CookDial exhibit two unique features: (i) procedural alignment between the dialog flow and supporting document; (ii) complex agent decision-making that involves segmenting long sentences, paraphrasing hard instructions and resolving coreference in the dialog context. In addition, we identify three challenging (sub)tasks in the assumed task-oriented dialog system: (1) User Question Understanding, (2) Agent Action Frame Prediction, and (3) Agent Response Generation. For each of these tasks, we develop a neural baseline model, which we evaluate on the CookDial dataset. We publicly release the CookDial dataset, comprising rich annotations of both dialogs and recipe documents, to stimulate further research on domain-specific document-grounded dialog systems.
+                                            </td>
+                                            <td align="center">--</td>
+                                            <td align="center">--</td>
+                                            <td align="left"><a class="dllink" href=" https://github.com/YiweiJiang2015/CookDial">Info and download</a></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td align="left">
+                                                Coached Conversational Preference Elicitation (CCPE)
+                                            </td>
+                                            <td align="left">Dialogue</td>
+                                            <td align="left">Preference</td>
+                                            <td align="center">--</td>
+                                            <td align="center">502</td>
+                                            <td align="center">--</td>
+                                            <td align="left">A dataset consisting of 502 English dialogs with 12,000 annotated utterances between a user and an assistant discussing movie preferences in natural language. It was collected using a Wizard-of-Oz methodology between two paid crowd-workers, where one worker plays the role of an 'assistant', while the other plays the role of a 'user'. The 'assistant' elicits the 'user’s' preferences about movies following a Coached Conversational Preference Elicitation (CCPE) method. The assistant asks questions designed to minimize the bias in the terminology the 'user' employs to convey his or her preferences as much as possible, and to obtain these preferences in natural language. Each dialog is annotated with entity mentions, preferences expressed about entities, descriptions of entities provided, and other statements of entities.
+                                            </td>
+                                            <td align="center">--</td>
+                                            <td align="center">--</td>
+                                            <td align="left"><a class="dllink" href="https://research.google/resources/datasets/coached-conversational-preference-elicitation/">Info and download</a></td>
+                                        <tr>
+                                            <td align="left">
+                                                Alpaca
+                                            </td>
+                                            <td align="left">Instruction</td>
+                                            <td align="left">Broad</td>
+                                            <td align="center">1</td>
+                                            <td align="center">52K</td>
+                                            <td align="center">--</td>
+                                            <td align="left">Instruction tuning dataset created by querying ChatGPT</td>
+                                            <td align="center">--</td>
+                                            <td align="center">--</td>
+                                            <td align="left"><a class="dllink" href="https://github.com/tatsu-lab/stanford_alpaca">Info and download</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="left">
+                                                Dolly 15K
+                                            </td>
+                                            <td align="left">Instruction</td>
+                                            <td align="left">Broad</td>
+                                            <td align="center">1</td>
+                                            <td align="center">87K</td>
+                                            <td align="center">--</td>
+                                            <td align="left">Instruction dataset created by human employees at Databricks</td>
+                                            <td align="center">--</td>
+                                            <td align="center">--</td>
+                                            <td align="left"><a class="dllink" href="https://github.com/databrickslabs/dolly/tree/master/data">Info and download</a></td>
+                                        </tr>
+                                        <tr>
+                                          <!-- https://github.com/facebookresearch/diplomacy_cicero/tree/main/parlai_diplomacy/tasks -->
+                                          <td align="left">
+                                              Diplomacy (Cicero)
+                                          </td>
+                                          <td align="left">Gameplay</td>
+                                          <td align="left">Diplomacy</td>
+                                          <td align="center">--</td>
+                                          <td align="center">40</td>
+                                          <td align="center">--</td>
+                                          <td align="left">Contains ~40 redacted dialogs and gameplay scenarios in the Diplomacy game. Also contains open source models that could be used to generate more data via self-play.</td>
+                                          <td align="center">English</td>
+                                          <td align="center">MIT (<a href="https://github.com/facebookresearch/diplomacy_cicero/blob/main/LICENSE.md">modified</a>)</td>
+                                          <td align="left"><a class="dllink" href="https://github.com/facebookresearch/diplomacy_cicero/tree/main/data/cicero_redacted_games">Info and download.</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="left">
+                                                Human ChatGPT Comparison Corpus (HC3)
+                                            </td>
+                                            <td align="left">RLHF</td>
+                                            <td align="left">Broad</td>
+                                            <td align="center">1</td>
+                                            <td align="center">50K</td>
+                                            <td align="center">--</td>
+                                            <td align="left">"Contains around 60K human answers and 27K ChatGPT answers for around 24K questions, resulting in a total number of around 87K question-answer examples." Used by <a href="https://bair.berkeley.edu/blog/2023/04/03/koala/">Koala</a>.</td>
+                                            <td align="center">--</td>
+                                            <td align="center">--</td>
+                                            <td align="left"><a class="dllink" href="https://github.com/Hello-SimpleAI/chatgpt-comparison-detection">Info and download</a></td>
+                                        </tr>
+                                        <!-- HH RLHF -->
+                                        <tr>
+                                            <td align="left">
+                                                Anthropic HH RLHF
+                                            </td>
+                                            <td align="left">RLHF</td>
+                                            <td align="left">Broad</td>
+                                            <td align="center">--</td>
+                                            <td align="center">160k</td>
+                                            <td align="center">--</td>
+                                            <td align="left">"The Anthropic HH dataset contains human ratings of harmfulness and helpfulness of model outputs. The dataset contains ~160K human-rated examples, where each example in this dataset consists of a pair of responses from a chatbot, one of which is preferred by humans."Used by <a href="https://bair.berkeley.edu/blog/2023/04/03/koala/">Koala</a>.</td>
+                                            <td align="center">--</td>
+                                            <td align="center">--</td>
+                                            <td align="left"><a class="dllink" href="https://huggingface.co/datasets/Anthropic/hh-rlhf">Info and download</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="left">
+                                                OpenAI WebGPT
+                                            </td>
+                                            <td align="left">RLHF</td>
+                                            <td align="left">Broad</td>
+                                            <td align="center">1</td>
+                                            <td align="center">20K</td>
+                                            <td align="center">--</td>
+                                            <td align="left">"The OpenAI WebGPT dataset includes a total of around 20K comparisons where each example comprises a question, a pair of model answers, and metadata. The answers are rated by humans with a preference score." Used by <a href="https://bair.berkeley.edu/blog/2023/04/03/koala/">Koala</a>.</td>
+                                            <td align="center">--</td>
+                                            <td align="center">--</td>
+                                            <td align="left"><a class="dllink" href="https://huggingface.co/datasets/openai/webgpt_comparisons">Info and download</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="left">
+                                                OpenAI Summarization
+                                            </td>
+                                            <td align="left">RLHF</td>
+                                            <td align="left">Broad</td>
+                                            <td align="center">1</td>
+                                            <td align="center">93K</td>
+                                            <td align="center">--</td>
+                                            <td align="left">"The OpenAI summarization dataset contains ~93K examples, each example consists of feedback from humans regarding the summarizations generated by a model. Human evaluators chose the superior summary from two options." Used by <a href="https://bair.berkeley.edu/blog/2023/04/03/koala/">Koala</a>.</td>
+                                            <td align="center">--</td>
+                                            <td align="center">--</td>
+                                            <td align="left"><a class="dllink" href="https://huggingface.co/datasets/openai/summarize_from_feedback">Info and download</a></td>
+                                            </tr>
+                <tr>
+                  <td align="left">
+                    Let's Go!<br/>
+                  </td>
+                  <td align="left">Spoken</td>
+                  <td align="left">Bus schedules</td>
+                  <td align="center">--</td>
+                  <td align="center">171,128</td>
+                  <td align="center">--</td>
+                  <td align="left">Bus ride information system</td>
+                  <td align="center">--</td>
+                  <td align="center">--</td>
+                  <td align="left"><a class="dllink" href="https://github.com/DialRC/LetsGoDataset">Info and download</a></td>
+                </tr>
+                <tr>
+                <tr>
+                  <td align="left">
+                    DSTC1<br/>
+                  </td>
+                  <td align="left">Spoken</td>
+                  <td align="left">Bus schedules</td>
+                  <td align="center">13.56</td>
+                  <td align="center">15,000</td>
+                  <td align="center">3.7M</td>
+                  <td align="left">Bus ride information system</td>
+                  <td align="center">--</td>
+                  <td align="center">--</td>
+                  <td align="left"><a class="dllink" href="https://www.microsoft.com/en-us/research/event/dialog-state-tracking-challenge/">Info and download</a></td>
+                </tr>
+                <tr>
+                  <td align="left">
+                    DSTC2<br/>
+                  </td>
+                  <td align="left">Spoken</td>
+                  <td align="left">Restaurants</td>
+                  <td align="center">7.88</td>
+                  <td align="center">3,000</td>
+                  <td align="center">432K</td>
+                  <td align="left">Restaurant booking system</td>
+                  <td align="center">--</td>
+                  <td align="center">--</td>
+                  <td align="left"><a class="dllink" href="http://camdial.org/~mh521/dstc/">Info and Download</a></td>
+                </tr>
+                <tr>
+                  <td align="left">
+                    DSTC3<br/>
+                  </td>
+                  <td align="left">Spoken</td>
+                  <td align="left">Tourist information</td>
+                  <td align="center">8.27</td>
+                  <td align="center">2,265</td>
+                  <td align="center">403K</td>
+                  <td align="left">Information for tourists</td>
+                  <td align="center">--</td>
+                  <td align="center">--</td>
+                  <td align="left"><a class="dllink" href="http://camdial.org/~mh521/dstc/">Info and Download</a></td>
+                </tr>
+                <tr>
+                  <td align="left">CMU Communicator Corpus<br/></td>
+                  <td align="left">Spoken</td>
+                  <td align="left">Travel</td>
+                  <td align="center">11.67</td>
+                  <td align="center">15,481</td>
+                  <td align="center">2M*</td>
+                  <td align="left">Travel planning and booking system</td>
+                  <td align="center">--</td>
+                  <td align="center">--</td>
+                  <td align="left"><a class="dllink" href="http://www.speech.cs.cmu.edu/Communicator/manuals.html">Info and Download</a></td>
+                </tr>
+                <tr>
+                  <td align="left">ATIS Pilot Corpus<br/></td>
+                  <td align="left">Spoken</td>
+                  <td align="left">Travel</td>
+                  <td align="center">25.4</td>
+                  <td align="center">41</td>
+                  <td align="center">11.4K*</td>
+                  <td align="left">Travel planning and booking system</td>
+                  <td align="center">--</td>
+                  <td align="center">--</td>
+                  <td align="left"><a class="dllink" href="https://catalog.ldc.upenn.edu/docs/LDC93S4B/corpus.html">Info</a><br/><a class="dllink" href="https://github.com/denizyuret/nlpcourse/tree/master/download">Download</a></td>
+
+                </tr>
+
+                <tr>
+                  <td align="left">Ritel Corpus<br/></td>
+                  <td align="left">Spoken</td>
+                  <td align="left">Unrestricted/ Diverse Topics</td>
+                  <td align="center">9.3*</td>
+                  <td align="center">582</td>
+                  <td align="center">60k</td>
+                  <td align="left">An annotated open-domain question answering spoken dialogue system</td>
+                  <td align="center">--</td>
+                  <td align="center">--</td>
+                  <td align="left"><a class="dllink" href="https://publi.limsi.fr/RS2005/chm/lir/lir12/">Info</a><br/> Contact corpus authors for download</td>
+                </tr>
+                <tr>
+                  <td align="left">DIALOG Mathematical Proofs </td>
+                  <td align="left">Spoken</td>
+                  <td align="left">Mathematics</td>
+                  <td align="center">12</td>
+                  <td align="center">66</td>
+                  <td align="center">8.7K*</td>
+                  <td align="left">Humans interact with computer system to do mathematical theorem proving</td>
+                  <td align="center">--</td>
+                  <td align="center">--</td>
+                  <td align="left"><a class="dllink" href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.114.5792&rep=rep1&type=pdf">Info</a><br/> Contact corpus authors for download</td>
+                </tr>
+
+                <tr>
+                  <td align="left">MATCH Corpus <br/> [<a class="tth_citeref" href="./references.html#georgila2010match">Georgila et&nbsp;al., 2010</a>]</td>
+                  <td align="left">Spoken</td>
+                  <td align="left">Appointment Scheduling</td>
+                  <td align="center">14.0</td>
+                  <td align="center">447</td>
+                  <td align="center">69K*</td>
+                  <td align="left">A system for scheduling appointments.</td>
+                  <td align="center">--</td>
+                  <td align="center">--</td>
+                  <td align="left"><a class="dllink" href="http://groups.inf.ed.ac.uk/match/">Info and download</a></td>
+                </tr>
+
+                <tr>
+                  <td align="left">Maluuba Frames<br/>[<a class="tth_citeref" href="./references.html#elframes">El&nbsp;Asri et&nbsp;al., 2017</a>]</td>
+                  <td align="left">Chat, QA &amp; Recommendation</td>
+                  <td align="left">Travel &amp; Vacation Booking</td>
+                  <td align="center">15</td>
+                  <td align="center">1369</td>
+                  <td align="center">-</td>
+                  <td align="left">For goal-driven dialogue systems. Semantic frames labeled and actions taken on a knowledge-base annotated.</td>
+                  <td align="center">--</td>
+                  <td align="center">--</td>
+                  <td align="left"><a class="dllink" href="https://datasets.maluuba.com/Frames">Info and Download</a></td>
+                </tr>
+                <tr>
+                  <td align="left">Key-Value Retrieval dataset<br/>[<a class="tth_citeref" href="./references.html#kvret">Eric and Manning, 2017</a>]</td>
+                  <td align="left">Chat, QA</td>
+                  <td align="left">Calendar, Weather, POI navigation</td>
+                  <td align="center">	5.25</td>
+                  <td align="center">3031</td>
+                  <td align="center">-</td>
+                  <td align="left">For Task-oriented dialogue systems. Intent, slots and KB annotated for each session.</td>
+                  <td align="center">--</td>
+                  <td align="center">--</td>
+                  <td align="left"><a class="dllink" href="https://nlp.stanford.edu/blog/a-new-multi-turn-multi-domain-task-oriented-dialogue-dataset/">Info and Download</a></td>
+                </tr>
+                <tr>
+                  <td align="left">MultiWOZ<br/>[<a class="tth_citeref" href="./references.html#multiwoz">Budzianowski et al. 2018</a>]</td>
+                  <td align="left">Chat, QA, Recommendations</td>
+                  <td align="left">Travel</td>
+                  <td align="center">14</td>
+                  <td align="center">10438</td>
+                  <td align="center">-</td>
+                  <td align="left">For goal-driven dialogue systems. Fully labelled on both user and system sides.</td>
+                  <td align="center">--</td>
+                  <td align="center">--</td>
+                  <td align="left"><a class="dllink" href="http://dialogue.mi.eng.cam.ac.uk/index.php/corpus/">Info and Download</a></td>
+                </tr>
+                  <tr>
+                    <td align="left">NPS Chat Corpus [<a class="tth_citation" href="./references.html#forsyth2007lexical" id="CITEforsyth2007lexical">Forsyth and Martell, 2007</a>]</td>
+                    <td align="left">Chat</td>
+                    <td align="left">Unrestricted</td>
+                    <td align="center">&nbsp;704</td>
+                    <td align="center">15</td>
+                    <td align="center">100M</td>
+                    <td align="left">Posts from age-specific online chat rooms.</td>
+                                                                <td align="center">--</td>
+                                                                <td align="center">--</td>
+
+                    <td align="left"><a class="dllink" href="http://faculty.nps.edu/cmartell/NPSChat.htm">Info and Download</a></td>
+                  </tr>
+                  <tr>
+                    <td align="left">Twitter Corpus [<a class="tth_citation" href="./references.html#Ritter:2010:UMT:1857999.1858019" id="CITERitter:2010:UMT:1857999.1858019">Ritter et&nbsp;al., 2010</a>]</td>
+                    <td align="left">Microblog</td>
+                    <td align="left">Unrestricted</td>
+                    <td align="center">2</td>
+                    <td align="center">1.3M</td>
+                    <td align="center">&nbsp;125M</td>
+                    <td align="left">Tweets and replies extracted from Twitter</td>
+                    <td align="center">--</td>
+                    <td align="center">--</td>
+
+                    <td align="left">Contact corpus authors for data.</td>
+                  </tr>
+                  <tr>
+                    <td align="left">Twitter Triple Corpus [<a class="tth_citeref" href="./references.html#sordoni2015aneural">Sordoni et&nbsp;al., 2015</a>]</td>
+                    <td align="left">Microblog</td>
+                    <td align="left">Unrestricted</td>
+                    <td align="center">3</td>
+                    <td align="center">4,232</td>
+                    <td align="center">&nbsp;65K</td>
+                    <td align="left">A-B-A triples extracted from Twitter</td>
+                                                                <td align="center">--</td>
+                                                                <td align="center">--</td>
+
+                    <td align="left"><a class="dllink" href="https://www.microsoft.com/en-us/download/details.aspx?id=52375">Info and Download</a></td>
+                  </tr>
+            
+                  <tr>
+                    <td align="left">UseNet Corpus [<a class="tth_citation" href="./references.html#shaoul2009usenet" id="CITEshaoul2009usenet">Shaoul and Westbury, 2009</a>]</td>
+                    <td align="left">Microblog</td>
+                    <td align="left">Unrestricted</td>
+                    <td align="center">&nbsp;687</td>
+                    <td align="center">47860</td>
+                    <td align="center">&nbsp;7B</td>
+                    <td align="left">UseNet forum postings</td>
+                                                                <td align="center">--</td>
+                                                                <td align="center">--</td>
+
+                    <td align="left"><a class="dllink" href="http://www.psych.ualberta.ca/~westburylab/downloads/usenetcorpus.download.html">Info and Download</a></td>
+                  </tr>
+            
+                  <tr>
+                    <td align="left">NUS SMS Corpus [<a class="tth_citation" href="./references.html#chen2013creating" id="CITEchen2013creating">Chen and Kan, 2013</a>]</td>
+                    <td align="left">SMS messages</td>
+                    <td align="left">Unrestricted</td>
+                    <td align="center">&nbsp;18</td>
+                    <td align="center">&nbsp;3K</td>
+                    <td align="center">580,668*<sup><span style="font-size:x-small"><sup>[<u>&#175;</u>]</sup></span></sup></td>
+                    <td align="left">SMS messages collected between two users, with timing analysis.</td>
+                                                                <td align="center">--</td>
+                                                                <td align="center">--</td>
+
+                    <td align="left"><a class="dllink" href="http://www.comp.nus.edu.sg/~nlp/corpora.html">Info and Download</a></td>
+                  </tr>
+                  <tr>
+                    <td align="left">Reddit Domestic Abuse Corpus [<a class="tth_citation" href="./references.html#ray4183analysis" id="CITEray4183analysis">Schrading et&nbsp;al., 2015</a>]</td>
+                    <td align="left">Forum</td>
+                    <td align="left">Abuse help</td>
+                    <td align="center">17.53</td>
+                    <td align="center">21,133</td>
+                    <td align="center">19M-103M <sup>\triangle</sup></td>
+                    <td align="left">Reddit posts from either domestic abuse subreddits, or general chat.</td>
+                                                                <td align="center">--</td>
+                                                                <td align="center">--</td>
+
+                    <td align="left"><a class="dllink" href="http://nicschrading.com/data/">Info and Download</a></td>
+                  </tr>
+                  <tr>
+                    <td align="left">Settlers of Catan [<a class="tth_citation" href="./references.html#afantenos2012developing" id="CITEafantenos2012developing">Afantenos et&nbsp;al., 2012</a>]</td>
+                    <td align="left">Chat</td>
+                    <td align="left">Game terms</td>
+                    <td align="center">&nbsp;95</td>
+                    <td align="center">21</td>
+                    <td align="center">-</td>
+                    <td align="left">Conversations between players in the game `Settlers of Catan'.</td>
+                                                                <td align="center">--</td>
+                                                                <td align="center">--</td>
+
+                    <td align="left"><a class="dllink" href="http://settlers.inf.ed.ac.uk/socl/">Info</a><br/><br/>Contact corpus authors for download. </td>
+                  </tr>
+                  <tr>
+                    <td align="left">Cards Corpus [<a class="tth_citation" href="./references.html#djalali2012corpus" id="CITEdjalali2012corpus">Djalali et&nbsp;al., 2012</a>]</td>
+                    <td align="left">Chat</td>
+                    <td align="left">Game terms</td>
+                    <td align="center">38.1</td>
+                    <td align="center">1,266</td>
+                    <td align="center">282K</td>
+                    <td align="left">Conversations between players playing `Cards world'.</td>
+                                                                <td align="center">--</td>
+                                                                <td align="center">--</td>
+
+                    <td align="left"><a class="dllink" href="http://cardscorpus.christopherpotts.net/">Info and Download</a></td>
+                  </tr>
+                  <tr>
+                    <td align="left">Agreement in Wikipedia Talk Pages [<a class="tth_citation" href="./references.html#andreas2012annotating" id="CITEandreas2012annotating">Andreas et&nbsp;al., 2012</a>]</td>
+                    <td align="left">Forum</td>
+                    <td align="left">Unrestricted</td>
+                    <td align="center">2</td>
+                    <td align="center">822</td>
+                    <td align="center">110K</td>
+                    <td align="left">LiveJournal and Wikipedia Discussions forum threads. Agreement type and level annotated.</td>
+                                                                <td align="center">--</td>
+                                                                <td align="center">--</td>
+
+                    <td align="left"><a class="dllink" href="http://www.cs.columbia.edu/~sara/data.php">Info and Download</a></td>
+                  </tr>
+                  <tr>
+                    <td align="left">Agreement by Create Debaters [<a class="tth_citation" href="./references.html#rosenthal2015couldn" id="CITErosenthal2015couldn">Rosenthal and McKeown, 2015</a>]</td>
+                    <td align="left">Forum</td>
+                    <td align="left">Unrestricted</td>
+                    <td align="center">2</td>
+                    <td align="center">10K</td>
+                    <td align="center">1.4M</td>
+                    <td align="left">Create Debate forum conversations. Annotated what type of agreement (e.g. paraphrase) or disagreement.</td>
+                                                                <td align="center">--</td>
+                                                                <td align="center">--</td>
+
+                    <td align="left"><a class="dllink" href="http://www.cs.columbia.edu/~sara/data.php">Info and Download</a></td>
+                  </tr>
+                  <tr>
+                    <td align="left">Internet Argument Corpus [<a class="tth_citation" href="./references.html#walker2012corpus" id="CITEwalker2012corpus">Walker et&nbsp;al., 2012b</a>]</td>
+                    <td align="left">Forum</td>
+                    <td align="left">Politics</td>
+                    <td align="center">&nbsp;35.45</td>
+                    <td align="center">&nbsp;11K</td>
+                    <td align="center">&nbsp;73M</td>
+                    <td align="left">Debates about specific political or moral positions. A separate corpus (Argumentative Summary Corpus, [<a class="tth_citation" href="./references.html#misra2015argsummary" id="CITEmisra2015argsummary">Walker et&nbsp;al., 2012b</a>]) annotates a subset of this corpus with summaries of the arguments.</td>
+                                                                <td align="center">--</td>
+                                                                <td align="center">--</td>
+
+                    <td align="left"><a class="dllink" href="https://nlds.soe.ucsc.edu/iac2">Info and Download</a><br/><a class="dllink" href="https://nlds.soe.ucsc.edu/node/30">Argument Summary Corpus</a></td>
+                  </tr>
+                  <tr>
+                    <td align="left">MPC Corpus [<a class="tth_citation" href="./references.html#shaikh2010mpc" id="CITEshaikh2010mpc">Shaikh et&nbsp;al., 2010</a>]</td>
+                    <td align="left">Chat</td>
+                    <td align="left">Social tasks</td>
+                    <td align="center">520</td>
+                    <td align="center">14</td>
+                    <td align="center">58K</td>
+                    <td align="left">Conversations about general, political, and interview topics.</td>
+                                                                <td align="center">--</td>
+                                                                <td align="center">--</td>
+
+                    <td align="left"><a class="dllink" href="https://github.com/sashank06/MPC-Corpus">Info and Download</a></td>
+                  </tr>
+                  <tr>
+                    <td align="left">Ubuntu Dialogue Corpus [<a class="tth_citeref" href="./references.html#lowe2015ubuntu">Lowe et&nbsp;al., 2015a</a>]</td>
+                    <td align="left">Chat</td>
+                    <td align="left">Ubuntu Operating System</td>
+                    <td align="center">7.71</td>
+                    <td align="center">930K</td>
+                    <td align="center">100M</td>
+                    <td align="left">Dialogues extracted from Ubuntu chat stream on IRC.</td>
+                                                                <td align="center">--</td>
+                                                                <td align="center">--</td>
+
+                    <td align="left"><a class="dllink" href="https://github.com/rkadlec/ubuntu-ranking-dataset-creator">Info and Download</a></td>
+                  </tr>
+                  <tr>
+                    <td align="left">Ubuntu Chat Corpus [<a class="tth_citation" href="./references.html#uthus2013ubuntu" id="CITEuthus2013ubuntu">Uthus and Aha, 2013</a>]</td>
+                    <td align="left">Chat</td>
+                    <td align="left">Ubuntu Operating System</td>
+                    <td align="center">&nbsp;3381.6</td>
+                    <td align="center">10665</td>
+                    <td align="center">&nbsp;2B*<sup><span style="font-size:x-small"><sup>[<u>&#175;</u>]</sup></span></sup></td>
+                    <td align="left">Chat stream scraped from IRC logs (no dialogues extracted).</td>
+                                                                <td align="center">--</td>
+                                                                <td align="center">--</td>
+
+                    <td align="left"><a class="dllink" href="http://daviduthus.org/UCC/">Info and Download</a></td>
+                  </tr>
+                  <tr>
+                    <td align="left">Movie Dialog Dataset [<a class="tth_citeref" href="./references.html#dodge2015evaluating">Dodge et&nbsp;al., 2015</a>]</td>
+                    <td align="left">Chat, QA &amp; Recommendation</td>
+                    <td align="left">Movies</td>
+                    <td align="center">&nbsp;3.3</td>
+                    <td align="center">&nbsp;3.1M<sup>\blacktriangledown</sup></td>
+                    <td align="center">&nbsp;185M</td>
+                    <td align="left">For goal-driven dialogue systems. Includes movie metadata as knowledge triples.</td>
+                                                                <td align="center">--</td>
+                                                                <td align="center">--</td>
+
+                    <td align="left"><a class="dllink" href="https://research.fb.com/downloads/babi/">Info and Download</a></td>
+                  </tr>
+                  <tr>
+                    <td align="left">DailyDialog Dataset [<a class="tth_citeref" href="./references.html#li2017daily">Li et&nbsp;al., 2017</a>]</td>
+                    <td align="left">Chat</td>
+                    <td align="left">Daily Life</td>
+                    <td align="center">&nbsp;7.9</td>
+                    <td align="center">&nbsp;13K</td>
+                    <td align="center">&nbsp;1.5M</td>
+                    <td align="left">Conversations extracted from English language educational texts. Labeled with emotions.</td>
+                                                                <td align="center">--</td>
+                                                                <td align="center">--</td>
+
+                    <td align="left"><a class="dllink" href="http://yanran.li/dailydialog">Info and Download</a></td>
+                  </tr>
+                          <tr>
+          <td align="left">HCRC Map Task Corpus [<a class="tth_citation" href="./references.html#anderson1991hcrc" id="CITEanderson1991hcrc">Anderson et&nbsp;al., 1991</a>]</td>
+          <td align="left">Human-Human Constrained Dialogue Datasets</td>
+          <td align="left">Map-Reproducing Task</td>
+          <td align="center">--</td>
+          <td align="center">128</td>
+          <td align="center">147k</td>
+          <td align="left">Dialogues from HLAP Task in which speakers must collaborate verbally to reproduce on one participant’s map a route printed on the other’s.</td>
+                                                      <td align="center">--</td>
+                                                      <td align="center">--</td>
+
+          <td align="left"><a class="dllink" href="http://groups.inf.ed.ac.uk/maptask/">Info and Download</a></td>
+        </tr>
+        <tr>
+          <td align="left">The Walking Around Corpus [<a class="tth_citation" href="./references.html#brennan2013entrainment" id="CITEbrennan2013entrainment">Brennan et&nbsp;al., 2013</a>]</td>
+          <td align="left">Human-Human Constrained Dialogue Datasets</td>
+          <td align="left">Location Finding Task</td>
+          <td align="center">--</td>
+          <td align="center">36</td>
+          <td align="center">300k*</td>
+          <td align="left">People collaborating over telephone to find certain locations.</td>
+                                                      <td align="center">--</td>
+                                                      <td align="center">--</td>
+
+          <td align="left"><a class="dllink" href="https://catalog.ldc.upenn.edu/ldc2015s08">Info and Download</a></td>
+        </tr>
+        <tr>
+          <td align="left">Green Persuasive Database [<a class="tth_citation" href="./references.html#douglas2007humaine" id="CITEdouglas2007humaine">Douglas-Cowie et&nbsp;al., 2007</a>]</td>
+          <td align="left">Human-Human Constrained Dialogue Datasets</td>
+          <td align="left">Lifestyle</td>
+          <td align="center">--</td>
+          <td align="center">8</td>
+          <td align="center">35k*</td>
+          <td align="left">A persuader with (genuinely) strong pro-green feelings tries to convince persuadees to consider adopting more ‘green’ lifestyles.</td>
+                                                      <td align="center">--</td>
+                                                      <td align="center">--</td>
+
+          <td align="left"><a class="dllink" href="http://sspnet.eu/2009/12/green-persuasive-database/">Info</a><br/><a class="dllink" href="https://green-persuasive-db.sspnet.eu/">Download</a></td>
+        </tr>
+        <tr>
+          <td align="left">Intelligence Squared Debates [<a class="tth_citation" href="./references.html#zhang2016conversational" id="CITEzhang2016conversational">Zhang et&nbsp;al., 2016</a>]</td>
+          <td align="left">Human-Human Constrained Dialogue Datasets</td>
+          <td align="left">Debates</td>
+          <td align="center">--</td>
+          <td align="center">108</td>
+          <td align="center">1.8M</td>
+          <td align="left">Various topics in Oxford-style debates, each constrained to one subject. Audience opinions provided pre- and post-debates.</td>
+                                                      <td align="center">--</td>
+                                                      <td align="center">--</td>
+
+          <td align="left"><a class="dllink" href="http://tisjune.github.io/research/iq2">Info and Download</a></td>
+        </tr>
+        <tr>
+          <td align="left">The Corpus of Professional Spoken American English [<a class="tth_citation" href="./references.html#barlow2000corpus" id="CITEbarlow2000corpus">Barlow, 2000</a>]</td>
+          <td align="left">Human-Human Constrained Dialogue Datasets</td>
+          <td align="left">Politics, Education</td>
+          <td align="center">--</td>
+          <td align="center">200</td>
+          <td align="center">2M</td>
+          <td align="left">Interactions from faculty meetings and White House press conferences.</td>
+                                                      <td align="center">--</td>
+                                                      <td align="center">--</td>
+
+          <td align="left"><a class="dllink" href="http://www.athel.com/cpsa.html">Info and Download</a><br/>(Download may require purchase.)</td>
+        </tr>
+        <tr>
+          <td align="left">MAHNOB Mimicry Database [<a class="tth_citation" href="./references.html#sun2011multimodal" id="CITEsun2011multimodal">Sun et&nbsp;al., 2011</a>]</td>
+          <td align="left">Human-Human Constrained Dialogue Datasets</td>
+          <td align="left">Politics, Games</td>
+          <td align="center">--</td>
+          <td align="center">54</td>
+          <td align="center">100k*</td>
+          <td align="left">Two experiments: a discussion on a political topic, and a role-playing game.</td>
+                                                      <td align="center">--</td>
+                                                      <td align="center">--</td>
+
+          <td align="left"><a class="dllink" href="https://mahnob-db.eu/mimicry/">Info and Download</a></td>
+        </tr>
+        <tr>
+          <td align="left">The IDIAP Wolf Corpus [<a class="tth_citation" href="./references.html#hung2010idiap" id="CITEhung2010idiap">Hung and Chittaranjan, 2010</a>]</td>
+          <td align="left">Human-Human Constrained Dialogue Datasets</td>
+          <td align="left">Role-Playing Game</td>
+          <td align="center">--</td>
+          <td align="center">15</td>
+          <td align="center">60k*</td>
+          <td align="left">A recording of Werewolf role-playing game with annotations related to game progress.</td>
+                                                      <td align="center">--</td>
+                                                      <td align="center">--</td>
+
+          <td align="left"><a class="dllink" href="http://www.idiap.ch/dataset/wolf-database">Info and Download</a></td>
+        </tr>
+        <tr>
+          <td align="left">SEMAINE corpus [<a class="tth_citation" href="./references.html#mckeown2010semaine" id="CITEmckeown2010semaine">McKeown et&nbsp;al., 2010</a>]</td>
+          <td align="left">Human-Human Constrained Dialogue Datasets</td>
+          <td align="left">Emotional Conversations</td>
+          <td align="center">--</td>
+          <td align="center">100</td>
+          <td align="center">450k*</td>
+          <td align="left">Users were recorded while holding conversations with an operator who adopts roles designed to evoke emotional reactions.</td>
+                                                      <td align="center">--</td>
+                                                      <td align="center">--</td>
+
+          <td align="left"><a class="dllink" href="https://semaine-db.eu/">Info and Download</a></td>
+        </tr>
+        <tr>
+          <td align="left">DSTC4/DSTC5 Corpora [<a class="tth_citeref" href="./references.html#kim2015dialog">Kim et&nbsp;al., 2015</a>,<a class="tth_citation" href="./references.html#kim2016fifth" id="CITEkim2016fifth">Kim et&nbsp;al., 2016</a>]</td>
+          <td align="left">Human-Human Constrained Dialogue Datasets</td>
+          <td align="left">Tourist</td>
+          <td align="center">--</td>
+          <td align="center">35</td>
+          <td align="center">273k</td>
+          <td align="left">Tourist information exchange over Skype.</td>
+                                                      <td align="center">--</td>
+                                                      <td align="center">--</td>
+
+          <td align="left"><a class="dllink" href="http://www.colips.org/workshop/dstc4/">DSTC4</a><br/><br/><a class="dllink" href="http://workshop.colips.org/dstc5/">DSTC5</a><br/><br/>(DSTC4 Training Set with Chinese lang. Test Set)</td>
+        </tr>
+        <tr>
+          <td align="left">Loqui Dialogue Corpus [<a class="tth_citation" href="./references.html#passonneau2014loqui" id="CITEpassonneau2014loqui">Passonneau and Sachar, 2014</a>]</td>
+          <td align="left">Human-Human Constrained Dialogue Datasets</td>
+          <td align="left">Library Inquiries</td>
+          <td align="center">--</td>
+          <td align="center">82</td>
+          <td align="center">21K</td>
+          <td align="left">Telephone interactions between librarians and patrons. Annotated dialogue acts, discussion topics, frames (discourse units), question-answer pairs.</td>
+                                                      <td align="center">--</td>
+                                                      <td align="center">--</td>
+
+          <td align="left"><a class="dllink" href="https://academiccommons.columbia.edu/catalog/ac:176612">Info and Download</a></td>
+        </tr>
+        <tr>
+          <td align="left">MRDA Corpus [<a class="tth_citation" href="./references.html#shriberg2004icsi" id="CITEshriberg2004icsi">Shriberg et&nbsp;al., 2004</a>]</td>
+          <td align="left">Human-Human Constrained Dialogue Datasets</td>
+          <td align="left">ICSI Meetings</td>
+          <td align="center">--</td>
+          <td align="center">75</td>
+          <td align="center">11K*</td>
+          <td align="left">Recordings of ICSI meetings. Topics include: ICSI meeting recorder project itself, automatic speech recognition, natural language processing and neural theories of language. Dialogue acts, question-answer pairs, and hot spots.</td>
+                                                      <td align="center">--</td>
+                                                      <td align="center">--</td>
+
+          <td align="left"><a class="dllink" href="http://www1.icsi.berkeley.edu/~ees/dadb/">Info and Download</a></td>
+        </tr>
+        <tr>
+          <td align="left">TRAINS 93 Dialogues Corpus [<a class="tth_citation" href="./references.html#heeman1995trains" id="CITEheeman1995trains">Heeman and Allen, 1995</a>]</td>
+          <td align="left">Human-Human Constrained Dialogue Datasets</td>
+          <td align="left">Railroad Freight Route Planning</td>
+          <td align="center">--</td>
+          <td align="center">98</td>
+          <td align="center">55K</td>
+          <td align="left">Collaborative planning of railroad freight routes.</td>
+          <td align="center">--</td>
+          <td align="center">--</td>
+
+          <td align="left"><a class="dllink" href="https://www.cs.rochester.edu/research/speech/trains.html">Info and Download</a></td>
+        </tr>
+        <tr>
+          <td align="left">Verbmobil Corpus [<a class="tth_citation" href="./references.html#weilhammer2002multi" id="CITEweilhammer2002multi">Burger et&nbsp;al., 2000</a>]</td>
+          <td align="left">Human-Human Constrained Dialogue Datasets</td>
+          <td align="left">Appointment Scheduling</td>
+          <td align="center">--</td>
+          <td align="center">726</td>
+          <td align="center">270K</td>
+          <td align="left">Spontaneous speech data collected for the Verbmobil project. Full corpus is in English, German, and Japanese. We only show English statistics.</td>
+                                                      <td align="center">--</td>
+                                                      <td align="center">--</td>
+
+          <td align="left"><a class="dllink" href="http://verbmobil.dfki.de/facts.html">Info</a><br/><a class="dllink" href="https://www.phonetik.uni-muenchen.de/Bas/BasVM1eng.html">Download I</a><br/><a class="dllink" href="https://www.phonetik.uni-muenchen.de/Bas/BasVM2eng.html">Download II</a></td>
+        </tr>
+        <tr>
+          <td align="left">ICT Rapport Datasets [<a class="tth_citation" href="./references.html#gratch2007rapport" id="CITEgratch2008rapport">Gratch et&nbsp;al., 2007</a>]</td>
+          <td align="left">Human-Human Constrained Dialogue Datasets</td>
+          <td align="left">Sexual Harassment Awareness</td>
+          <td align="center">--</td>
+          <td align="center">165</td>
+          <td align="center">N/A</td>
+          <td align="left">A speaker tells a story to a listener. The listener is asked to not speak during the story telling. Contains audio-visual data, transcriptions, and annotations.</td>
+                                                      <td align="center">--</td>
+                                                      <td align="center">--</td>
+
+          <td align="left"><a class="dllink" href="http://rapport.ict.usc.edu/">Info and Download</a></td>
+        </tr>
+        <!-- stop -->
+        <tr>
+          <td align="left">
+            Switchboard [<a class="tth_citation" href="./references.html#godfrey1992switchboard" id="CITEgodfrey1992switchboard">Godfrey et&nbsp;al., 1992</a>]
+          </td>
+          <td align="left">Human-Human Spontaneous Dialogue Datasets</td>
+          <td align="left">Casual Topics</td>
+          <td align="center">--</td>
+          <td align="center">2,400</td>
+          <td align="center">3M</td>
+          <td align="left">Telephone conversations on pre-specified topics</td>
+                                                      <td align="center">--</td>
+                                                      <td align="center">--</td>
+
+          <td align="left"><a class="dllink" href="http://groups.inf.ed.ac.uk/switchboard/">Info and Download</a></td>
+
+        </tr>
+        <tr>
+          <td align="left">British National Corpus (BNC) [<a class="tth_citation" href="./references.html#leech1992100" id="CITEleech1992100">Leech, 1992</a>]</td>
+
+          <td align="left">Human-Human Spontaneous Dialogue Datasets</td>
+          <td align="left">Casual Topics</td>
+          <td align="center">--</td>
+          <td align="center">854</td>
+          <td align="center">10M</td>
+          <td align="left">British dialogues many contexts, from formal business or government meetings to radio shows and phone-ins.</td>
+                                                      <td align="center">--</td>
+                                                      <td align="center">--</td>
+
+          <td align="left"><a class="dllink" href="http://www.natcorp.ox.ac.uk/">Info and Download</a></td>
+        </tr>
+        <tr>
+          <td align="left">CALLHOME American English Speech [<a class="tth_citation" href="./references.html#canavan1997callhome" id="CITEcanavan1997callhome">Canavan et&nbsp;al., 1997</a>]</td>
+          <td align="left">Human-Human Spontaneous Dialogue Datasets</td>
+
+          <td align="left">Casual Topics</td>
+          <td align="center">--</td>
+          <td align="center">120</td>
+          <td align="center">540k*</td>
+          <td align="left">Telephone conversations between family members or close friends.</td>
+                                                      <td align="center">--</td>
+                                                      <td align="center">--</td>
+
+          <td align="left"><a class="dllink" href="https://ca.talkbank.org/access/CallHome/eng.html">Info and Download</a></td>
+        </tr>
+
+        <tr>
+          <td align="left">CALLFRIEND American English Non-Southern Dialect [<a class="tth_citation" href="./references.html#canavan1996callfriend" id="CITEcanavan1996callfriend">Canavan and Zipperlen, 1996</a>]</td>
+
+          <td align="left">Human-Human Spontaneous Dialogue Datasets</td>
+          <td align="left">Casual Topics</td>
+          <td align="center">--</td>
+          <td align="center">60</td>
+          <td align="center">180k*</td>
+          <td align="left">Telephone conversations between Americans with a Non-Southern accent.</td>
+                                                      <td align="center">--</td>
+                                                      <td align="center">--</td>
+
+          <td align="left"><a class="dllink" href="https://catalog.ldc.upenn.edu/LDC96S46">Info and Download</a></td>
+        </tr>
+        <tr>
+          <td align="left">The Bergen Corpus of London Teenage Language [<a class="tth_citation" href="./references.html#haslerud1995bergen" id="CITEhaslerud1995bergen">Haslerud and Stenstr&#246;m, 1995</a>]</td>
+          <td align="left">Human-Human Spontaneous Dialogue Datasets</td>
+          <td align="left">Unrestricted</td>
+          <td align="center">--</td>
+          <td align="center">100</td>
+          <td align="center">500k</td>
+          <td align="left">Spontaneous teenage talk recorded in 1993. Conversations were recorded secretly.</td>
+                                                      <td align="center">--</td>
+                                                      <td align="center">--</td>
+
+          <td align="left"><a class="dllink" href="http://clu.uni.no/icame/colt/">Info and Download</a></td>
+        </tr>
+        <tr>
+          <td align="left">The Cambridge and Nottingham Corpus of Discourse in English [<a class="tth_citation" href="./references.html#mccarthy1998spoken" id="CITEmccarthy1998spoken">McCarthy, 1998</a>]</td>
+          <td align="left">Human-Human Spontaneous Dialogue Datasets</td>
+          <td align="left">Casual Topics</td>
+          <td align="center">--</td>
+          <td align="center">-</td>
+          <td align="center">5M</td>
+          <td align="left">British dialogues from wide variety of informal contexts, such as hair salons, restaurants, etc.</td>
+                                                      <td align="center">--</td>
+                                                      <td align="center">--</td>
+
+          <td align="left"><a class="dllink" href="http://www.cambridge.org/us/cambridgeenglish/about-cambridge-english/cambridge-english-corpus">Info and Download</a><br/>Note: CANCODE is a subset of the Cambridge English Corpus.</td>
+        </tr>
+        <tr>
+          <td align="left">D64 Multimodal Conversation Corpus [<a class="tth_citation" href="./references.html#oertel2013d64" id="CITEoertel2013d64">Oertel et&nbsp;al., 2013</a>]</td>
+          <td align="left">Human-Human Spontaneous Dialogue Datasets</td>
+          <td align="left">Unrestricted</td>
+          <td align="center">--</td>
+          <td align="center">2</td>
+          <td align="center">70k*</td>
+          <td align="left">Several hours of natural interaction between a group of people</td>
+          <td align="center">--</td>
+          <td align="center">--</td>
+
+          <td align="left">Contact corpus authors for data.</td>
+        </tr>
+        <tr>
+          <td align="left">AMI Meeting Corpus [<a class="tth_citation" href="./references.html#renals2007recognition" id="CITErenals2007recognition">Renals et&nbsp;al., 2007</a>]</td>
+          <td align="left">Human-Human Spontaneous Dialogue Datasets</td>
+          <td align="left">Meetings</td>
+          <td align="center">--</td>
+          <td align="center">175</td>
+          <td align="center">900k*</td>
+          <td align="left">Face-to-face meeting recordings.</td>
+                                                      <td align="center">--</td>
+                                                      <td align="center">--</td>
+
+          <td align="left"><a class="dllink" href="http://groups.inf.ed.ac.uk/ami/download/">Info and Download</a></td>
+        </tr>
+        <tr>
+          <td align="left">Cardiff Conversation Database (CCDb) [<a class="tth_citation" href="./references.html#aubrey2013cardiff" id="CITEaubrey2013cardiff">Aubrey et&nbsp;al., 2013</a>]</td>
+          <td align="left">Human-Human Spontaneous Dialogue Datasets</td>
+          <td align="left">Unrestricted</td>
+          <td align="center">--</td>
+          <td align="center">30</td>
+          <td align="center">20k*</td>
+          <td align="left">Audio-visual database with unscripted natural conversations, including visual annotations.</td>
+                                                      <td align="center">--</td>
+                                                      <td align="center">--</td>
+
+          <td align="left"><a class="dllink" href="http://www.cs.cf.ac.uk/ccdb/">Info and Download</a></td>
+        </tr>
+        <tr>
+          <td align="left">4D Cardiff Conversation Database (4D CCDb) [<a class="tth_citation" href="./references.html#vandeventer20154d" id="CITEvandeventer20154d">Vandeventer et&nbsp;al., 2015</a>]</td>
+          <td align="left">Human-Human Spontaneous Dialogue Datasets</td>
+          <td align="left">Unrestricted</td>
+          <td align="center">--</td>
+          <td align="center">17</td>
+          <td align="center">2.5k*</td>
+          <td align="left">A version of the CCDb with 3D video</td>
+                                                      <td align="center">--</td>
+                                                      <td align="center">--</td>
+
+          <td align="left"><a class="dllink" href="http://www.cs.cf.ac.uk/ccdb/">Info and Download</a></td>
+        </tr>
+        <tr>
+          <td align="left">The Diachronic Corpus of Present-Day Spoken English [<a class="tth_citation" href="./references.html#aarts2006diachronic" id="CITEaarts2006diachronic">Aarts and Wallis, 2006</a>]</td>
+          <td align="left">Human-Human Spontaneous Dialogue Datasets</td>
+          <td align="left">Casual Topics</td>
+          <td align="center">--</td>
+          <td align="center">280</td>
+          <td align="center">800k</td>
+          <td align="left">Selection of face-to-face, telephone, and public discussion dialogue from Britain.</td>
+                                                      <td align="center">--</td>
+                                                      <td align="center">--</td>
+
+          <td align="left"><a class="dllink" href="http://www.ucl.ac.uk/english-usage/projects/dcpse/">Info and Download</a></td>
+        </tr>
+        <tr>
+          <td align="left">The Spoken Corpus of the Survey of English Dialects [<a class="tth_citation" href="./references.html#beare1999spoken" id="CITEbeare1999spoken">Beare and Scott, 1999</a>]</td>
+          <td align="left">Human-Human Spontaneous Dialogue Datasets</td>
+          <td align="left">Casual Topics</td>
+          <td align="center">--</td>
+          <td align="center">314</td>
+          <td align="center">800k</td>
+          <td align="left">Dialogue of people aged 60 or above talking about their memories, families, work and the folklore of the countryside from a century ago.</td>
+                                                      <td align="center">--</td>
+                                                      <td align="center">--</td>
+
+          <td align="left"><a class="dllink" href="http://www2.iath.virginia.edu/ach-allc.99/proceedings/scott.html">Info</a><br/>Contact corpus authors for download.</td>
+        </tr>
+        <tr>
+          <td align="left">The Child Language Data Exchange System [<a class="tth_citation" href="./references.html#macwhinney1985child" id="CITEmacwhinney1985child">MacWhinney and Snow, 1985</a>]</td>
+          <td align="left">Human-Human Spontaneous Dialogue Datasets</td>
+          <td align="left">Unrestricted</td>
+          <td align="center">--</td>
+          <td align="center">11K</td>
+          <td align="center">10M</td>
+          <td align="left">International database organized for the study of first and second language acquisition.</td>
+                                                      <td align="center">--</td>
+                                                      <td align="center">--</td>
+
+          <td align="left"><a class="dllink" href="http://childes.psy.cmu.edu/">Info and Download</a></td>
+        </tr>
+        <tr>
+          <td align="left">The Charlotte Narrative and Conversation Collection (CNCC) [<a class="tth_citation" href="./references.html#reppen2004american" id="CITEreppen2004american">Reppen and Ide, 2004</a>]</td>
+          <td align="left">Human-Human Spontaneous Dialogue Datasets</td>
+          <td align="left">Casual Topics</td>
+          <td align="center">--</td>
+          <td align="center">95</td>
+          <td align="center">20K</td>
+          <td align="left">Narratives, conversations and interviews representative of the residents of Mecklenburg County, North Carolina.</td>
+                                                      <td align="center">--</td>
+                                                      <td align="center">--</td>
+
+          <td align="left"><a class="dllink" href="http://nsv.uncc.edu/nsv/narratives/">Info and Download</a></td>
+        </tr>
+        <tr>
+          <td align="left">The Group Affect and Performance (GAP) Corpus [<a class="tth_citation" href="./references.html#braley18gap" id="CITEbraley18gap">Braley and Murray, 2018</a>]</td>
+          <td align="left">Human-Human Spontaneous Dialogue Datasets</td>
+          <td align="left">Survival</td>
+          <td align="center">--</td>
+          <td align="center">28</td>
+          <td align="center">70K</td>
+          <td align="left">A winter survival task</td>
+                                                      <td align="center">--</td>
+                                                      <td align="center">--</td>
+
+          <td align="left"><a class="dllink" href="https://sites.google.com/view/gap-corpus/home">Info and Download</a></td>
+        </tr>
+        <tr>
+          <td align="left">The MULTISIMO Corpus [<a class="tth_citation" href="./references.html#koutsomm2018multi" id="CITEkoutsomm2018multi">Koutsombogera and Vogel, 2018</a>]</td>
+          <td align="left">Human-Human Spontaneous Dialogue Datasets</td>
+          <td align="left">Game</td>
+          <td align="center">--</td>
+          <td align="center">18</td>
+          <td align="center">26K</td>
+          <td align="left">Family Feud-like game</td>
+                                                      <td align="center">--</td>
+                                                      <td align="center">--</td>
+
+          <td align="left"><a class="dllink" href="http://multisimo.eu/datasets.html">Info and Download</a></td>
+        </tr>
+
+        <tr>
+          <td align="left">Movie-DiC [<a class="tth_citation" href="./references.html#banchs2012movie" id="CITEbanchs2012movie">Banchs, 2012</a>]</td>
+          <td align="left">Human-Human Scripted Dialogue Datasets</td>
+          <td align="left">Movie dialogues</td>
+          <td align="center">--</td>
+          <td align="center">132K</td>
+          <td align="center">6M</td>
+          <td align="left">Movie scripts of American films.</td>
+          <td align="center">--</td>
+          <td align="center">--</td>
+
+          <td align="left">Contact corpus authors for data.</td>
+        </tr>
+        <tr>
+          <td align="left">Movie-Triples [<a class="tth_citeref" href="./references.html#2015arXiv150704808S">Serban et&nbsp;al., 2016</a>]</td>
+          <td align="left">Human-Human Scripted Dialogue Datasets</td>
+          <td align="left">Movie dialogues</td>
+          <td align="center">--</td>
+          <td align="center">245K</td>
+          <td align="center">13M</td>
+          <td align="left">Triples of utterances which are filtered to come from X-Y-X triples.</td>
+          <td align="center">--</td>
+          <td align="center">--</td>
+
+          <td align="left">Contact corpus authors for data.</td>
+        </tr>
+        <tr>
+          <td align="left">Film Scripts Online Series</td>
+          <td align="left">Human-Human Scripted Dialogue Datasets</td>
+          <td align="left">Movie scripts</td>
+          <td align="center">--*</td>
+          <td align="center">263K</td>
+          <td align="center">16M*</td>
+          <td align="left">Two subsets of scripts (1000 American films and 500 mixed British/American films).</td>
+                                                      <td align="center">--</td>
+                                                      <td align="center">--</td>
+
+          <td align="left"><a class="dllink" href="https://alexanderstreet.com/products/film-scripts-online-series">Info and Download</a></td>
+        </tr>
+        <tr>
+          <td align="left">Cornell Movie-Dialogue Corpus [<a class="tth_citation" href="./references.html#Danescu-Niculescu-Mizil+Lee:11a" id="CITEDanescu-Niculescu-Mizil+Lee:11a">Danescu-Niculescu-Mizil and Lee, 2011</a>]</td>
+          <td align="left">Human-Human Scripted Dialogue Datasets</td>
+          <td align="left">Movie dialogues</td>
+          <td align="center">--</td>
+          <td align="center">220K</td>
+          <td align="center">9M*</td>
+          <td align="left">Short conversations from film scripts, annotated with character metadata.</td>
+                                                      <td align="center">--</td>
+                                                      <td align="center">--</td>
+
+          <td align="left"><a class="dllink" href="https://www.cs.cornell.edu/~cristian/Cornell_Movie-Dialogs_Corpus.html">Info and Download</a></td>
+        </tr>
+        <tr>
+          <td align="left">Filtered Movie Script Corpus [<a class="tth_citation" href="./references.html#nio2014conversation" id="CITEnio2014conversation">Nio et&nbsp;al., 2014</a>]</td>
+          <td align="left">Human-Human Scripted Dialogue Datasets</td>
+          <td align="left">Movie dialogues</td>
+          <td align="center">--</td>
+          <td align="center">86K</td>
+          <td align="center">2M*</td>
+          <td align="left">Triples of utterances which are filtered to come from X-Y-X triples.</td>
+                                                      <td align="center">--</td>
+                                                      <td align="center">--</td>
+
+          <td align="left"><a class="dllink" href="http://ahclab.naist.jp/resource/dialog_corpora/resources.html">Info and Download</a></td>
+        </tr>
+        <tr>
+          <td align="left">American Soap Opera Corpus [<a class="tth_citation" href="./references.html#davies2012corpus" id="CITEdavies2012corpus">Davies, 2012b</a>]</td>
+          <td align="left">Human-Human Scripted Dialogue Datasets</td>
+          <td align="left">TV show scripts</td>
+          <td align="center">--</td>
+          <td align="center">1.2M</td>
+          <td align="center">100M</td>
+          <td align="left">Transcripts of American soap operas.</td>
+                                                      <td align="center">--</td>
+                                                      <td align="center">--</td>
+
+          <td align="left"><a class="dllink" href="http://corpus.byu.edu/soap/">Info and Download</a></td>
+        </tr>
+        <tr>
+          <td align="left">TVD Corpus [<a class="tth_citation" href="./references.html#roy2014tvd" id="CITEroy2014tvd">Roy et&nbsp;al., 2014</a>]</td>
+          <td align="left">Human-Human Scripted Dialogue Datasets</td>
+          <td align="left">TV show scripts</td>
+          <td align="center">--</td>
+          <td align="center">10K</td>
+          <td align="center">600k*</td>
+          <td align="left">TV scripts from a comedy (Big Bang Theory) and drama (Game of Thrones) show.</td>
+                                                      <td align="center">--</td>
+                                                      <td align="center">--</td>
+
+          <td align="left"><a class="dllink" href="http://tvd.niderb.fr/corpus/">Info and Download</a></td>
+        </tr>
+        <tr>
+          <td align="left">Character Style from Film Corpus [<a class="tth_citation" href="./references.html#walker2012annotated" id="CITEwalker2012annotated">Walker et&nbsp;al., 2012a</a>]</td>
+          <td align="left">Human-Human Scripted Dialogue Datasets</td>
+          <td align="left">Movie scripts</td>
+          <td align="center">--</td>
+          <td align="center">151K</td>
+          <td align="center">9.6M</td>
+          <td align="left">Scripts from IMSDb, annotated for linguistic structures and character archetypes.</td>
+          <td align="center">--</td>
+          <td align="center">--</td>
+
+          <td align="left">Contact corpus authors for data.</td>
+        </tr>
+        <tr>
+          <td align="left">SubTle Corpus [<a class="tth_citation" href="./references.html#ameixa2013subtitles" id="CITEameixa2013subtitles">Ameixa and Coheur, 2013</a>]</td>
+          <td align="left">Human-Human Scripted Dialogue Datasets</td>
+          <td align="left">Movie subtitles</td>
+          <td align="center">--</td>
+          <td align="center">3.35M</td>
+          <td align="center">20M</td>
+          <td align="left">Aligned interaction-response pairs from movie subtitles.</td>
+          <td align="center">--</td>
+          <td align="center">--</td>
+
+          <td align="left">Contact corpus authors for data.</td>
+        </tr>
+        <tr>
+          <td align="left">OpenSubtitles [<a class="tth_citation" href="./references.html#tiedemann2012parallel" id="CITEtiedemann2012parallel">Tiedemann, 2012</a>]</td>
+          <td align="left">Human-Human Scripted Dialogue Datasets</td>
+          <td align="left">Movie subtitles</td>
+          <td align="center">--</td>
+          <td align="center">36M</td>
+          <td align="center">1B</td>
+          <td align="left">Movie subtitles which are not speaker-aligned.</td>
+                                                      <td align="center">--</td>
+                                                      <td align="center">--</td>
+
+          <td align="left"><a class="dllink" href="http://opus.lingfil.uu.se/OpenSubtitles2016.php">Info and Download</a></td>
+        </tr>
+        <tr>
+          <td align="left">CED (1560-1760) Corpus [<a class="tth_citation" href="./references.html#kyto2006guide" id="CITEkyto2006guide">Kyt&#246; and Walker, 2006</a>]</td>
+          <td align="left">Human-Human Scripted Dialogue Datasets</td>
+          <td align="left">Written Works &amp; Trial Proceedings</td>
+          <td align="center">--</td>
+          <td align="center">-</td>
+          <td align="center">1.2M</td>
+          <td align="left">Various scripted fictional works from (1560-1760) as well as court trial proceedings.</td>
+                                                      <td align="center">--</td>
+                                                      <td align="center">--</td>
+
+          <td align="left"><a class="dllink" href="http://www.engelska.uu.se/forskning/engelska-spraket/elektroniska-resurser/a-corpus">Info and Download</a></td>
+        </tr>
+              </table>
+            </div>
+          </div>
+
+  
+                                        </div>
+                                        </div>
+                                        </div>
+                                        </div>
+                                        </div>
+                                        </div>
+                                        <script>
+                                          var $rows = $('#table tr:not(:first)');
+$('#search').keyup(function() {
+
+    var val = '^(?=.*\\b' + $.trim($(this).val()).split(/\s+/).join('\\b)(?=.*\\b') + ').*$',
+        reg = RegExp(val, 'i'),
+        text;
+
+    $rows.show().filter(function() {
+        text = $(this).text().replace(/\s+/g, ' ');
+        return !reg.test(text);
+    }).hide();
+});
+                                        </script>
+                                        </body>
+                                        </html>
